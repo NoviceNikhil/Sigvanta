@@ -2,10 +2,18 @@
 (E-Commerce Domain)
 
 A scalable, secure, and production-ready full-stack e-commerce platform that unifies product management, order lifecycle tracking, inventory control, user authentication, and activity logging in one centralized system — tested on a real Amazon 2023 sales dataset.
-![alt text](image.png)
+
+![Homepage](images/homepage.png)
 ## 🌟 Features
 
 ### User Authentication & Management
+
+![Signup Page](images/signup.png)
+
+![Login Page](images/userlogin.png)
+
+![OTP Verification](images/otp.png)
+
 - 🔐 **Login / Signup** - Role-based login system with User / Admin toggle
 - 🔑 **Google OAuth** - One-click Google sign-in via Passport.js
 - 📧 **OTP Verification** - Email-based OTP for user and admin accounts
@@ -22,6 +30,9 @@ A scalable, secure, and production-ready full-stack e-commerce platform that uni
 - 👤 **Role-Aware Header** - Navigation adapts dynamically based on whether the user is a customer or admin
 
 ### Product Catalog
+
+![All Products](images/AllProducts.png)
+
 - 📦 **Universal Catalog** - Browse all products or filter by specific category
 - ⚖️ **Weighted Search Engine** - Products ranked by multiple relevance factors
 - 🔢 **Dynamic Pagination** - Server-side pagination for fast load times at scale
