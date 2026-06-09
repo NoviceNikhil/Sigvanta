@@ -1,6 +1,17 @@
 # Product & Order Management System
 (E-Commerce Domain)
 
+## 🌐 Live Demo
+
+| | URL |
+|---|---|
+| **Frontend** | [https://sigvanta-frontend.onrender.com](https://sigvanta-frontend.onrender.com) |
+| **Backend API** | [https://sigvanta-backend.onrender.com](https://sigvanta-backend.onrender.com) |
+
+> **Note:** Free tier services spin down after 15 minutes of inactivity. The first request may take 30-60 seconds (cold start).
+
+---
+
 A scalable, secure, and production-ready full-stack e-commerce platform that unifies product management, order lifecycle tracking, inventory control, user authentication, and activity logging in one centralized system — tested on a real Amazon 2023 sales dataset.
 
 ![Homepage](images/homepage.png)
