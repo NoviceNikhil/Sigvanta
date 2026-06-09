@@ -3,8 +3,8 @@ import { getProducts, createProduct, updateProduct, deleteProduct } from "../../
 import InventoryFilters from "../../components/InventoryFilters";
 
 
-import InventoryTable from "../../components/inventoryTable";
-import InventoryModal from "../../components/inventorymodel";
+import InventoryTable from "../../components/InventoryTable";
+import InventoryModal from "../../components/InventoryModel";
 
 const LIMIT = 20;
 

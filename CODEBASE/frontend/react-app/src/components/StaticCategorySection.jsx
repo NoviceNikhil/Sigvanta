@@ -1,5 +1,5 @@
 import React from "react";
-import Card from "./card";
+import Card from "./Card";
 
 // Notice we added userId and onCartUpdate to the props list here!
 const StaticCategorySection = React.memo(({ category, products, onSeeAll, userId, onCartUpdate, wishlistProductIds = [] }) => {
