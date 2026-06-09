@@ -1,4 +1,6 @@
-const BASE_URL = `http://localhost:3000/api/v1/orders`; // ← also fix port, your backend is 3001
+import { API_BASE_URL } from "../config";
+
+const BASE_URL = `${API_BASE_URL}/api/v1/orders`; // ← also fix port, your backend is 3001
 
 // ─── shared helper so we don't repeat credentials everywhere ─────────────────
 const authFetch = (url, options = {}) =>

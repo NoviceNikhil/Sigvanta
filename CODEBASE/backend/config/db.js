@@ -8,11 +8,20 @@ const dbHost = process.env.DB_HOST || process.env.SQL_HOST || "127.0.0.1";
 const dbPortRaw = process.env.DB_PORT || process.env.SQL_PORT;
 const dbPort = dbPortRaw ? Number(dbPortRaw) : undefined;
 
+const dialectOptions = {};
+if (process.env.SQL_SSL === "true") {
+  dialectOptions.ssl = {
+    minVersion: "TLSv1.2",
+    rejectUnauthorized: true,
+  };
+}
+
 const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
   host: dbHost,
   port: dbPort,
   dialect: "mysql",
   logging: false,
+  ...(Object.keys(dialectOptions).length > 0 && { dialectOptions }),
 });
 
 module.exports = sequelize;

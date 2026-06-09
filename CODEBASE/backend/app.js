@@ -17,6 +17,11 @@ const adminLogRoutes = require("./routes/adminLogRoutes");
 
 const app = express();
 
+// ================= TRUST PROXY (required for express-rate-limit behind Render/Heroku) =================
+if (process.env.NODE_ENV === "production") {
+  app.set("trust proxy", 1);
+}
+
 // ================= MIDDLEWARE =================
 app.use(express.json());
 app.use(cookieParser());
@@ -24,7 +29,10 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: (origin, callback) => {
-      const allowedOrigins = ["http://localhost:5173"];
+      const allowedOrigins = [
+        "http://localhost:5173",
+        process.env.FRONTEND_URL, // cloud frontend URL (set on Render)
+      ].filter(Boolean); // removes undefined entries
 
       // allow server-to-server / curl requests (no Origin header)
       if (!origin) return callback(null, true);

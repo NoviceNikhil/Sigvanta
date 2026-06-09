@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { MdFavoriteBorder, MdFavorite, MdShoppingCart, MdMenu } from "react-icons/md";
 import { useState, useEffect } from "react";
 import { cartService } from "../services/cartServices";
+import { API_BASE_URL } from "../config";
 
 const AdminHeader = ({ onMenuClick }) => {
     const location = useLocation();
@@ -10,7 +11,7 @@ const AdminHeader = ({ onMenuClick }) => {
     const currentUser = JSON.parse(localStorage.getItem("user") || "null");
     const profilePicture =
         currentUser?.profilePicture ||
-        `http://localhost:3000/avatars/${currentUser?.ProfileIcon || "boy.png"}`;
+        `${API_BASE_URL}/avatars/${currentUser?.ProfileIcon || "boy.png"}`;
     const isProfilePage =
         location.pathname === "/admin/profile" || location.pathname === "/user/profile";
 

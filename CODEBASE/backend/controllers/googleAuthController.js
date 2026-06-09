@@ -12,9 +12,12 @@ exports.redirectToGoogle = (req, res, next) => {
 };
 
 exports.googleCallback = async (req, res) => {
+  const frontendURL = process.env.FRONTEND_URL || "http://localhost:5173";
+  const isProduction = process.env.NODE_ENV === "production";
+
   try {
     if (!req.user) {
-      return res.redirect("http://localhost:5173/login");
+      return res.redirect(`${frontendURL}/login`);
     }
 
     const token = jwt.sign(
@@ -27,11 +30,11 @@ exports.googleCallback = async (req, res) => {
       { expiresIn: "7d" },
     );
 
-    // ✅ SET COOKIE (secure)
+    // ✅ SET COOKIE (secure in production)
     res.cookie("token", token, {
-      httpOnly: true, // 🔥 cannot access from JS
-      secure: false, // ⚠️ true in production (HTTPS)
-      sameSite: "lax", // or "strict"
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
@@ -44,8 +47,8 @@ exports.googleCallback = async (req, res) => {
     });
 
     // 🔥 redirect without token in URL
-    res.redirect("http://localhost:5173/");
+    res.redirect(`${frontendURL}/`);
   } catch (err) {
-    res.redirect("http://localhost:5173/login");
+    res.redirect(`${frontendURL}/login`);
   }
 };
