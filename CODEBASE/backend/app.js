@@ -57,6 +57,10 @@ sequelize
   .authenticate()
   .then(() => {
     console.log("✅ MySQL connected");
+    // Use alter:true only in development; TiDB doesn't support some ALTER operations
+    if (process.env.NODE_ENV === "production") {
+      return sequelize.sync();
+    }
     return sequelize.sync({ alter: true });
   })
   .then(() => console.log("✅ Tables synced"))
