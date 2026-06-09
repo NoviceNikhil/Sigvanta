@@ -23,6 +23,7 @@ import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
 import { wishlistService } from "../services/wishlistServices";
 import { authService } from "../services/authServices";
+import { API_BASE_URL } from "../config";
 // Lazy Loaded Components
 const Card = lazy(() => import("../components/Card"));
 const CategoryBar = lazy(() => import("../components/CategoryBar"));
@@ -331,7 +332,7 @@ export default function HomePage() {
   };
   const profilePicture =
     currentUser?.profilePicture ||
-    `http://localhost:3000/avatars/${currentUser?.ProfileIcon || "boy.png"}`;
+    `${API_BASE_URL}/avatars/${currentUser?.ProfileIcon || "boy.png"}`;
 
   return (
     <div className="animate-fade-in min-h-screen flex flex-col relative overflow-hidden bg-slate-50">

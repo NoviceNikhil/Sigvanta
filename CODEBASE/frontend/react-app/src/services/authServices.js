@@ -1,7 +1,8 @@
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 
-const AUTH_URL = `http://localhost:3000/auth/protected`;
-const USERS_URL = `http://localhost:3000/users`; // Your users route base
+const AUTH_URL = `${API_BASE_URL}/auth/protected`;
+const USERS_URL = `${API_BASE_URL}/users`; // Your users route base
 
 const getLoggedInUser = async () => {
   // ⚠️ Paste your JWT from Postman right here inside the quotes
@@ -42,7 +43,7 @@ const getLoggedInUser = async () => {
 
 const logout = async () => {
   await axios.post(
-    "http://localhost:3000/auth/logout",
+    `${API_BASE_URL}/auth/logout`,
     {},
     { withCredentials: true }, // needed to send/clear the cookie
   );

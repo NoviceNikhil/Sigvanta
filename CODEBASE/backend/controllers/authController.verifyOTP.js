@@ -16,10 +16,11 @@ exports.verifyAdminOtp = async (req, res) => {
     const data = await authServisesOTP.verifyAdminOTP(email, otp);
 
     // 🔥 set cookie
+    const isProduction = process.env.NODE_ENV === "production";
     res.cookie("token", data.token, {
       httpOnly: true,
-      secure: false,       // localhost
-      sameSite: "lax",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       path: "/",           // 🔥 MUST
     });
 
@@ -58,9 +59,12 @@ exports.verifyUserOTP = async (req, res) => {
 
     // 🔥 SIGNUP → set cookie
     if (data.token) {
+      const isProduction = process.env.NODE_ENV === "production";
       res.cookie("token", data.token, {
         httpOnly: true,
-        sameSite: "lax",
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
+        path: "/",
       });
     }
 

@@ -11,10 +11,11 @@ exports.login = async (req, res) => {
 
     // 🔥 ADD THIS BLOCK
     if (data.token) {
+      const isProduction = process.env.NODE_ENV === "production";
       res.cookie("token", data.token, {
         httpOnly: true,
-        secure: false,       // localhost
-        sameSite: "lax",
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
         path: "/",
       });
 

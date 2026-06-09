@@ -43,6 +43,19 @@ exports.loginUser = async (email, password) => {
 
   // 🔥 ADMIN CASE → OTP FLOW
   if (user.role === "admin") {
+    // If SKIP_OTP is enabled (cloud deployment), skip email and auto-verify
+    if (process.env.SKIP_OTP === "true") {
+      const token = jwt.sign(
+        { id: user.id, role: user.role },
+        process.env.JWT_SECRET,
+        { expiresIn: "1d" }
+      );
+      return {
+        token,
+        user: sanitizeUser(user),
+      };
+    }
+
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const expiry = Date.now() + 5 * 60 * 1000;
 
@@ -118,6 +131,16 @@ exports.forgotPassword = async (email) => {
     const error = new Error("User not found");
     error.statusCode = 404;
     throw error;
+  }
+
+  // If SKIP_OTP is enabled (cloud deployment), generate a reset token directly
+  if (process.env.SKIP_OTP === "true") {
+    const resetToken = jwt.sign(
+      { email },
+      process.env.JWT_SECRET,
+      { expiresIn: "5m" }
+    );
+    return { email, resetToken, message: "OTP skipped (cloud mode)" };
   }
 
   const otp = Math.floor(100000 + Math.random() * 900000).toString();

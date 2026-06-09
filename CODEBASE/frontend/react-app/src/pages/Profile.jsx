@@ -6,6 +6,7 @@ import { deleteCurrentUser, logoutUser, updateAvatar, updateCurrentUserProfile }
 import { logout, setUser } from "../store/authSlice";
 // ✅ IMPORT API FUNCTIONS
 import { requestAdminAccess, getAdminRequests, handleAdminRequest as handleAdminRequestAPI } from "../api/auth";
+import { API_BASE_URL } from "../config";
 
 const Profile = () => {
     const dispatch = useDispatch();
@@ -14,7 +15,7 @@ const Profile = () => {
 
     const getAvatarUrl = (profileIcon) => {
         const avatar = profileIcon || "boy.png";
-        return `http://localhost:3000/avatars/${avatar}`;
+        return `${API_BASE_URL}/avatars/${avatar}`;
     };
 
     const [formData, setFormData] = useState({
@@ -276,7 +277,7 @@ const Profile = () => {
                                 {["boy.png", "cat.png", "dog.png", "grandfather.png", "man.png", "old-woman.png", "programmer.png", "woman.png"].map((avatar) => (
                                     <img
                                         key={avatar}
-                                        src={`http://localhost:3000/avatars/${avatar}`}
+                                        src={`${API_BASE_URL}/avatars/${avatar}`}
                                         onClick={() => handleAvatarChange(avatar)}
                                         className="w-16 h-16 rounded-full cursor-pointer border-2 hover:scale-105 transition"
                                     />

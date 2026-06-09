@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../src/store/authSlice";
+import { API_BASE_URL } from "../src/config";
 
 const useAuthInit = () => {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ const useAuthInit = () => {
 
     const fetchUser = async () => {
       try {
-        const res = await fetch("http://localhost:3000/auth/me", {
+        const res = await fetch(`${API_BASE_URL}/auth/me`, {
           credentials: "include", // sends the cookie
         });
         if (!res.ok) return; // not logged in, do nothing
@@ -21,7 +22,7 @@ const useAuthInit = () => {
 
         // fetch full user details using the id from token
         const userRes = await fetch(
-          `http://localhost:3000/users/${json.data.id}`,
+          `${API_BASE_URL}/users/${json.data.id}`,
           {
             credentials: "include",
           },
