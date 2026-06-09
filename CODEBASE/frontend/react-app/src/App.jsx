@@ -10,10 +10,10 @@ import Orders from './pages/Orders'
 import Layout from './components/Layout'
 import Dashboard from './pages/admin/Dashboard'
 
-import Inventory from './pages/Admin/Inventory'
+import Inventory from './pages/admin/Inventory'
 import Categoryproducts from './pages/Categoryproducts'
-import Category from './pages/Admin/Category'
-import OrdersManagement from './pages/Admin/OrdersManagement'
+import Category from './pages/admin/Category'
+import OrdersManagement from './pages/admin/OrdersManagement'
 import AdminLogsPanel from './components/AdminLogsPanel'
 
 import Profile from './pages/Profile'
