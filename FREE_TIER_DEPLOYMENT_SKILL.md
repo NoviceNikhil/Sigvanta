@@ -25,6 +25,47 @@ Before touching any cloud service, scan the codebase for hardcoded values:
 
 ### 2. Fix Known Cloud Compatibility Issues BEFORE Deploying
 
+#### Case-Sensitive File Imports (CRITICAL — catches 90% of deploy failures)
+macOS/Windows filesystems are case-insensitive (`./Card` and `./card` resolve to the same file). Linux (Render, Heroku, AWS) is case-sensitive — mismatched case = `MODULE_NOT_FOUND` crash.
+
+**You MUST audit all imports/requires before deploying:**
+
+```bash
+# Backend (Node.js) — find all require paths with uppercase and verify against actual filenames
+grep -rn "require(" --include="*.js" | grep -v node_modules | grep "[A-Z]"
+
+# Frontend (React) — find all import paths and cross-check
+grep -rn "from ['\"]\./" --include="*.jsx" --include="*.js" | grep -v node_modules
+```
+
+**Common patterns that break:**
+```js
+// ❌ BAD — file is actually "inventoryController.js"
+const ctrl = require("../controllers/InventoryController");
+
+// ❌ BAD — file is actually "Card.jsx"
+import Card from "./card";
+
+// ❌ BAD — folder is actually "admin/" (lowercase)
+import Dashboard from "./pages/Admin/Dashboard";
+
+// ✅ GOOD — exact case match to filesystem
+const ctrl = require("../controllers/inventoryController");
+import Card from "./Card";
+import Dashboard from "./pages/admin/Dashboard";
+```
+
+**Quick audit script (run from project root before deploying):**
+```bash
+# Lists all source files and their actual casing
+find src -name "*.jsx" -o -name "*.js" | sort
+find controllers middleware routes services utils models -name "*.js" | sort
+```
+
+Then compare against the import/require strings. Any mismatch = broken on Linux.
+
+**Tip**: This only surfaces on cloud because local dev (macOS) resolves both cases to the same file silently.
+
 #### Express behind a proxy (Render, Heroku, Railway)
 ```js
 // MUST add this before any middleware if using express-rate-limit
@@ -297,6 +338,9 @@ async def proxy_to_ml_service(path: str, request: Request):
 | White screen on sub-paths | Rewrite rule not working — clear cache & redeploy; check destination is `/index.html` with leading slash |
 | TiDB `mysql` CLI auth error | Don't use CLI. Use Node.js `mysql2` with `multipleStatements: true` |
 | Seed script too slow on cloud | Dump locally + import bulk SQL instead of running seed per-row |
+| `MODULE_NOT_FOUND` on cloud but works locally | **Case sensitivity!** macOS is case-insensitive, Linux is not. `require("./InventoryController")` fails if file is `inventoryController.js`. Audit ALL import/require paths against actual filenames before deploying. |
+| `Cannot find module '../pages/Admin/...'` | Folder is `admin/` (lowercase) on disk. Fix import to match exact case. Run `find src -type f` to see real filenames. |
+| TiDB `can't change column constraint` | Don't use `sequelize.sync({ alter: true })` in production. Use plain `sync()` — data is already migrated. Gate with `NODE_ENV === "production"`. |
 | `secure: false` cookie not working | Set `secure: true` and `sameSite: "none"` in production |
 | Frontend still hitting localhost | Check `VITE_API_BASE_URL` is set in Render static site env vars and redeploy |
 | `No open ports detected` | App crashing on startup. Check for OOM, missing modules, or blocking startup code |
