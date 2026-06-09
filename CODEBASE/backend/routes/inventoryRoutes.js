@@ -5,7 +5,7 @@ const {
   updateProduct,
   deleteProduct,
   uploadImage,
-} = require("../controllers/InventoryController");
+} = require("../controllers/inventoryController");
 const { validateProduct } = require("../middleware/productValidator");
 const upload = require("../utils/multer");
 const authenticate = require("../middleware/authenticate_middlewere");
